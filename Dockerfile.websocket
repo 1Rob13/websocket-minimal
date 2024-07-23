@@ -1,0 +1,9 @@
+FROM golang:latest
+
+WORKDIR /
+COPY go.mod go.sum ./
+COPY *.go ./
+RUN CGO_ENABLED=0 GOOS=linux go build -o /go-ping
+RUN chmod +x /go-ping
+CMD [ "./go-ping" ]
+

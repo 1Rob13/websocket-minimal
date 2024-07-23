@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ping Statistics</title>
+</head>
+<body>
+    <h1>Ping Statistics</h1>
+    <form>
+        <label for="packetsRecv">Packets Received:</label>
+        <input type="text" id="packetsRecv" name="packetsRecv" value="1" readonly><br><br>
+        
+        <label for="packetsSent">Packets Sent:</label>
+        <input type="text" id="packetsSent" name="packetsSent" value="1" readonly><br><br>
+        
+        <label for="packetsRecvDuplicates">Packets Received Duplicates:</label>
+        <input type="text" id="packetsRecvDuplicates" name="packetsRecvDuplicates" value="0" readonly><br><br>
+        
+        <label for="packetLoss">Packet Loss:</label>
+        <input type="text" id="packetLoss" name="packetLoss" value="0%" readonly><br><br>
+        
+        <label for="ipAddr">IP Address:</label>
+        <input type="text" id="ipAddr" name="ipAddr" value="172.217.18.4" readonly><br><br>
+        
+        <label for="addr">Address:</label>
+        <input type="text" id="addr" name="addr" value="www.google.com" readonly><br><br>
+        
+        <label for="rtts">Round-trip Times:</label>
+        <input type="text" id="rtts" name="rtts" value="7286828" readonly><br><br>
+        
+        <label for="minRtt">Minimum Round-trip Time:</label>
+        <input type="text" id="minRtt" name="minRtt" value="7286828" readonly><br><br>
+        
+        <label for="maxRtt">Maximum Round-trip Time:</label>
+        <input type="text" id="maxRtt" name="maxRtt" value="7286828" readonly><br><br>
+        
+        <label for="avgRtt">Average Round-trip Time:</label>
+        <input type="text" id="avgRtt" name="avgRtt" value="7286828" readonly><br><br>
+        
+        <label for="stdDevRtt">Standard Deviation of Round-trip Times:</label>
+        <input type="text" id="stdDevRtt" name="stdDevRtt" value="0" readonly><br><br>
+    </form>
+</body>
+</html>
+
+<script>
+
+
+const socket = new WebSocket('ws://localhost:8080/ping-ws');
+
+// Event listener for successful connection
+socket.onopen = function() {
+  console.log('WebSocket connection established.');
+};
+
+socket.onmessage = (event) => {
+  console.log(event.data);
+  updateForm(event.data)
+};
+
+function updateForm(jsonData) {
+
+  const parsedData = JSON.parse(jsonData);
+  console.log(parsedData);
+
+  document.getElementById("packetsRecv").value = parsedData.Stats.PacketsRecv;
+  // document.getElementById("packetsSent").value = jsonData.data.PacketsSent;
+  // document.getElementById("packetsRecvDuplicates").value = jsonData.data.PacketsRecvDuplicates;
+  // document.getElementById("packetLoss").value = jsonData.data.PacketLoss + "%";
+  // document.getElementById("ipAddr").value = jsonData.data.IPAddr.IP;
+  // document.getElementById("addr").value = jsonData.data.Addr;
+  // document.getElementById("rtts").value = jsonData.data.Rtts[0];
+  // document.getElementById("minRtt").value = jsonData.data.MinRtt;
+  // document.getElementById("maxRtt").value = jsonData.data.MaxRtt;
+  document.getElementById("avgRtt").value = parsedData.Stats.AvgRtt;
+  // document.getElementById("stdDevRtt").value = jsonData.data.StdDevRtt;
+}
+
+</script>
+
+
+

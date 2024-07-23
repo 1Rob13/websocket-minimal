@@ -1,0 +1,10 @@
+version: '3'
+services:
+  playground-web-frontend:
+    image: website:latest
+    ports:
+      - 80:80
+  playground-web-backend:
+    image: socket:latest
+    ports:
+      - 8080:8080
